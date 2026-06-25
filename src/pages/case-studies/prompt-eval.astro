@@ -1,0 +1,79 @@
+---
+import Base from "../../layouts/Base.astro";
+import { videos } from "../../videos.js";
+const video = videos["prompt-eval"];
+---
+<Base title="Prompt Evaluation & Improvement Harness — Kitz Rulona" description="A harness that runs competing prompt versions through labelled test cases and proves, with numbers, that a prompt change improved performance.">
+  <article class="section">
+    <div class="container cs">
+      <a class="cs__back" href="/#work">← Back to work</a>
+      <h1>Prompt Evaluation &amp; Improvement Harness</h1>
+      <p class="cs__sub">Python · Claude Messages API · deterministic + LLM-as-judge scoring</p>
+      {video && (<p><a class="btn btn--ghost" href={video} target="_blank" rel="noopener">▶ Watch the 90-second demo</a></p>)}
+
+      <h2>The problem</h2>
+      <p>
+        The triage prompt works — but when I tweak it, is it getting <em>better</em>, or just
+        <em>different</em>? Vibes can't answer that. Almost no applicant can show they
+        <strong>measure</strong> prompts; this turns "analyse outputs and continuously improve"
+        into a repeatable tool.
+      </p>
+
+      <h2>The approach</h2>
+      <p>
+        Run every test case through every prompt version, then score two ways:
+      </p>
+      <ul>
+        <li><strong>Deterministic</strong> — did category / urgency / escalate match the expected
+          label? (The objective core; no model needed.)</li>
+        <li><strong>LLM-as-judge</strong> — a <em>separate</em> Claude call scores the reply's tone
+          &amp; helpfulness 1–5 against a fixed rubric (for the fuzzy criteria that have no single
+          right answer).</li>
+      </ul>
+
+      <h2>Architecture</h2>
+      <div class="diagram">cases/cases.json   (labelled messages: expected category/urgency/escalate)
+variants/*.txt     (v1 baseline · v2 +examples · v3 +rubric)
+        ↓
+run_eval.py  ──for each variant × case──►  Claude  →  &#123;category, urgency, escalate, reply&#125;
+        ├── deterministic: category / urgency / escalate vs the label
+        └── LLM judge: tone &amp; helpfulness 1–5 (fixed rubric)
+        ↓
+results.csv  +  before/after comparison table</div>
+
+      <h2>The three variants</h2>
+      <ul>
+        <li><strong>v1-baseline</strong> — minimal prompt: role, the fields, "write a reply".</li>
+        <li><strong>v2-with-examples</strong> — baseline + two few-shot examples.</li>
+        <li><strong>v3-with-rubric</strong> — baseline + an explicit category/urgency/escalation
+          rubric and brand-voice rules.</li>
+      </ul>
+
+      <h2>Results</h2>
+      <pre>Variant             Category  Urgency  Escalate  Overall  Tone  Help
+v1-baseline           75%      88%     100%      88%     4.6   4.8
+v2-with-examples      88%      88%     100%      92%     5.0   4.8
+v3-with-rubric        75%     100%     100%      92%     4.9   4.5</pre>
+      <p>
+        Both engineered variants beat the baseline (<strong>88% → 92%</strong>), and — the
+        interesting finding — they fix <strong>different</strong> failure modes. The few-shot
+        examples nail categorisation and tone (a worked brakes example fixed a misclassified safety
+        message); the explicit rubric nails urgency (the rule "a normal booking is medium urgency"
+        took urgency to 100%). No single variant wins everything, so the next experiment writes
+        itself: <strong>combine both</strong> into a v4.
+      </p>
+
+      <h2>Honest about the method</h2>
+      <p>
+        The deterministic metrics are the objective core; the LLM judge is a supplement that skews
+        lenient (most replies scored 4–5), so it shouldn't be read to 0.1 precision. One test case
+        (an overheating message labelled "booking" where "other" is just as defensible) penalises
+        every variant equally — a reminder that a noisy test set produces noisy conclusions, and
+        curating the cases is part of the job. Owning those limits is the difference between
+        "I ran a script" and "I evaluate prompts properly".
+      </p>
+
+      <p style="margin-top:34px;"><a class="btn btn--ghost" href="/#work">← Back to work</a></p>
+    </div>
+  </article>
+</Base>

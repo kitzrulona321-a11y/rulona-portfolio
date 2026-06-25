@@ -1,0 +1,89 @@
+---
+import Base from "../../layouts/Base.astro";
+import { videos } from "../../videos.js";
+const video = videos["lead-qualification"];
+---
+<Base title="Lead Qualification & Follow-up Engine — Kitz Rulona" description="A Claude workflow that qualifies inbound sales leads on a BANT rubric, assigns hot/warm/cold tiers, drafts follow-ups, and outputs a prioritised call queue.">
+  <article class="section">
+    <div class="container cs">
+      <a class="cs__back" href="/#work">← Back to work</a>
+      <h1>Lead Qualification &amp; Follow-up Engine</h1>
+      <p class="cs__sub">Python · Claude Messages API · CRM stub</p>
+      {video && (<p><a class="btn btn--ghost" href={video} target="_blank" rel="noopener">▶ Watch the 90-second demo</a></p>)}
+
+      <h2>The problem</h2>
+      <p>
+        In car sales, speed and prioritisation win deals — a lead contacted in ~5 minutes
+        converts far better than one contacted an hour later. But a sales team's inbox mixes a
+        cash-ready buyer in with someone "just looking", so reps burn time sorting instead of
+        calling the hot ones first.
+      </p>
+
+      <h2>The approach</h2>
+      <p>For each inbound lead, one Claude call:</p>
+      <ul>
+        <li><strong>Extracts</strong> BANT signals — budget, timeline, financing, trade-in, vehicle of interest</li>
+        <li><strong>Assigns a tier</strong> — hot / warm / cold against an explicit rubric</li>
+        <li><strong>Recommends</strong> the next action for the team</li>
+        <li><strong>Drafts</strong> a personalised follow-up that names the actual vehicle</li>
+      </ul>
+      <p>
+        It logs lead-shaped data to a CRM and prints a <strong>prioritised call queue</strong> —
+        hottest first — while flagging fleet orders and trade-in valuations for a salesperson.
+      </p>
+
+      <h2>A deliberate choice: tiers, not a 1–100 score</h2>
+      <p>
+        An open numeric score wobbles run-to-run (the same lead scores 72, then 68, then 75).
+        So the prompt uses stable, well-defined tiers, and the sort priority is derived in code
+        — the model never invents a number, and the queue is reproducible by construction.
+      </p>
+
+      <h2>Architecture</h2>
+      <div class="diagram">inbound lead
+   ↓
+orchestrator  (BANT rubric + brand voice + few-shot examples)
+   ↓
+Claude  →  schema-enforced JSON
+   ↓        &#123; name, vehicle, budget, timeline, financing, trade_in,
+   ↓          tier, rationale, next_action, draft_followup, needs_human &#125;
+   ├──→  CRM stub (lead-shaped columns)
+   ├──→  prioritised queue   (priority derived from tier, in code)
+   └──→  salesperson flag    (fleet / trade-in)</div>
+
+      <h2>Sample run — the prioritised queue</h2>
+      <pre>PRIORITISED QUEUE (call hot leads first)
+  [HOT ] Jenny Lao          Mitsubishi Xpander
+  [HOT ] FastCargo Inc.     fleet (6–8 vans)   <span class="g">→ salesperson</span>
+  [WARM] —                  Toyota Hilux 4x4
+  [COLD] —                  general enquiry</pre>
+      <div class="run">
+        <div class="in">"I want to buy the Mitsubishi Xpander. I have cash ready and I'd like to test drive this Saturday. Please call me. - Jenny Lao"</div>
+        <div class="out">
+          tier: <span class="g">HOT</span> · budget: strong · timeline: immediate<span class="badge badge--ok">AUTO-DRAFT</span><br />
+          <em>Follow-up:</em> "Hi Jenny, thanks for your interest in the Xpander — we'd love to set up that test drive this Saturday. Expect a call shortly, or reach us on (02) 555-0143..."
+        </div>
+      </div>
+
+      <h2>Measuring &amp; improving it (evals)</h2>
+      <p>
+        The demo ships with a labelled eval harness. It caught an over-escalation bug: the
+        original rule flagged "high-value leads" for a salesperson, so it escalated a cash-ready
+        buyer and a general financing question that should just get a drafted reply. An explicit
+        rule fixed it:
+      </p>
+      <pre>Version                          needs_human   tier      exact-match
+Before (vague "high-value")         75% (6/8)   100%      6/8
+After (explicit: fleet + trade-in) 100% (8/8)   100%      8/8</pre>
+      <p>Tiering accuracy held at 100% — the fix removed false positives without touching qualification.</p>
+
+      <h2>Cost &amp; model choice</h2>
+      <p>
+        Defaults to Claude Haiku 4.5 — qualification is a structured judgement over short text,
+        cheap at sales-team volume. Opus 4.8 is one env var away for nuanced, high-value leads.
+      </p>
+
+      <p style="margin-top:34px;"><a class="btn btn--ghost" href="/#work">← Back to work</a></p>
+    </div>
+  </article>
+</Base>

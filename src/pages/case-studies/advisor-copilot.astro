@@ -1,0 +1,100 @@
+---
+import Base from "../../layouts/Base.astro";
+import { videos } from "../../videos.js";
+const video = videos["advisor-copilot"];
+---
+<Base title="Internal Service Advisor Copilot — Kitz Rulona" description="A Claude assistant grounded in a dealership's own materials: cites its sources, escalates when the answer isn't covered, and trains new hires.">
+  <article class="section">
+    <div class="container cs">
+      <a class="cs__back" href="/#work">← Back to work</a>
+      <h1>Internal Service Advisor Copilot</h1>
+      <p class="cs__sub">Python · Claude Messages API · knowledge-grounded</p>
+      {video && (<p><a class="btn btn--ghost" href={video} target="_blank" rel="noopener">▶ Watch the 90-second demo</a></p>)}
+
+      <h2>The problem</h2>
+      <p>
+        Dealership service desks run on tribal knowledge. An advisor — especially a new hire —
+        constantly needs answers that live in a senior colleague's head or a folder of PDFs:
+        is this under warranty? what's the standard quote range? what do I do with a recurring
+        fault? when must I escalate? That's slow, inconsistent between staff, and risky when
+        policy is stated wrong (promising warranty coverage that doesn't apply).
+      </p>
+
+      <h2>The approach</h2>
+      <p>
+        A Claude assistant grounded in the dealership's <strong>own materials</strong> — a small
+        knowledge base of Markdown documents (warranty policy, pricing ranges, a common-issues
+        playbook, escalation rules, comms tone). For each question it:
+      </p>
+      <ul>
+        <li>answers <strong>only</strong> from the knowledge base — never invents policy or prices;</li>
+        <li><strong>cites the source file(s)</strong> it used, so the answer is auditable;</li>
+        <li><strong>escalates</strong> when the topic isn't covered, or when the rules require a
+          human (safety, complaints, warranty disputes, comebacks, refunds);</li>
+        <li>runs in <strong>advisor</strong> mode (concise, mid-task) or <strong>onboarding</strong>
+          mode (step-by-step teaching + a check-your-understanding question).</li>
+      </ul>
+
+      <h2>Architecture</h2>
+      <div class="diagram">staff question  +  mode (advisor | onboarding)
+        ↓
+loads  knowledge/*.md   (warranty · pricing · playbook · escalation · tone)
+        ↓
+Claude  (system prompt: "answer ONLY from the knowledge base; else escalate")
+        ↓   schema-enforced JSON
+&#123; in_kb, answer, sources[], escalate, check_question &#125;
+        ├──► answer, with the source file(s) named
+        ├──► escalate = true  →  route to a senior advisor
+        └──► onboarding  →  step-by-step teaching + a check question</div>
+      <p>
+        The knowledge base is plain Markdown here so the demo runs with zero setup. In production
+        the grounding step is the only thing that changes — point it at a real CRM/ticketing
+        knowledge base, a Notion/Confluence space, or indexed PDFs. The prompt and guardrails stay
+        identical.
+      </p>
+
+      <h2>The guardrail (why it's trustworthy)</h2>
+      <p>
+        For a tool staff rely on, a confident wrong answer is worse than an honest "I don't know".
+        The system prompt's first rule is grounding: answer only from supplied documents; if the
+        answer isn't there, return <code>in_kb: false</code>, escalate, and say so.
+      </p>
+
+      <h2>Sample runs</h2>
+      <div class="run">
+        <div class="in">"Does the new-vehicle warranty cover brake pads?"</div>
+        <div class="out">
+          source: <span class="g">warranty-policy.md</span><span class="badge badge--ok">ANSWERED</span><br />
+          "Bumper-to-bumper is 3 years/100,000 km; powertrain 5 years/160,000 km. Brake pads are
+          NOT covered — they're a listed wear-and-tear exclusion."
+        </div>
+      </div>
+      <div class="run">
+        <div class="in">"Do we offer free loaner cars during a major repair?"</div>
+        <div class="out">
+          in knowledge base: <span class="g">false</span><span class="badge">ESCALATE</span><br />
+          "That isn't covered in our current materials — please escalate to a senior advisor."
+          <em>(No invented policy. This is the guardrail working.)</em>
+        </div>
+      </div>
+      <div class="run">
+        <div class="in">"Walk me through a customer whose car is overheating." <strong>(onboarding mode)</strong></div>
+        <div class="out">
+          sources: <span class="g">common-issues-playbook.md, escalation-rules.md, customer-comms-tone.md</span><span class="badge">ESCALATE</span><br />
+          A step-by-step teaching transcript (stop driving · don't open a hot radiator · arrange a
+          tow · escalate) — then: <em>"Check: why arrange a tow instead of telling them to drive in
+          carefully?"</em>
+        </div>
+      </div>
+
+      <h2>Why it maps to the role</h2>
+      <p>
+        This is the internal-operations and training side of the job: an AI workflow for staff (not
+        customers) that gives fast, consistent, cited answers, refuses to fabricate policy, routes
+        the high-stakes cases to a human, and doubles as a self-serve onboarding trainer.
+      </p>
+
+      <p style="margin-top:34px;"><a class="btn btn--ghost" href="/#work">← Back to work</a></p>
+    </div>
+  </article>
+</Base>

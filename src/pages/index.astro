@@ -1,0 +1,203 @@
+---
+import Base from "../layouts/Base.astro";
+---
+<Base>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero__grid">
+      <div>
+        <p class="eyebrow">AI Workflow Engineer</p>
+        <h1>Claude AI &amp;<br /><span class="hero__name-accent">Automation</span> Specialist</h1>
+        <p class="hero__role">Prompt engineering · Workflow automation · System integration</p>
+        <p class="hero__pitch">
+          I design and ship <strong>Claude-powered automations</strong> for real business
+          operations — turning repetitive customer-service and sales work into fast,
+          reliable, measurable workflows.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--primary" href="/#work">View my work</a>
+          <a class="btn btn--ghost" href="/#resume">Résumé</a>
+        </div>
+        <div class="hero__meta">
+          <span>● Daily Claude Code user</span>
+          <span>● Production n8n automation</span>
+          <span>● Remote · 20+ hrs/week</span>
+        </div>
+      </div>
+      <img class="avatar" src="/headshot.jpg" width="248" height="330" alt="Kitz Rulona, AI Workflow Engineer" />
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="container about__grid">
+      <div class="about">
+        <p class="eyebrow">About</p>
+        <h2 class="section-title">Automation engineer who speaks fluent Claude</h2>
+        <p>
+          I'm Kitz Rulona, a Computer Engineer and founder of <strong>Hex Colony</strong>, a
+          tech startup that automates customer-facing and back-office operations. I use Claude
+          Code every day and build with the Claude Messages API — system-prompt design,
+          structured outputs, few-shot prompting, and evals.
+        </p>
+        <p>
+          My background spans software, APIs, and IoT/firmware, so I'm comfortable from the
+          prompt all the way down to the integration. I care about workflows that are
+          <strong>real and measurable</strong>, not demos that only work in a screenshot — and
+          I keep a human in the loop wherever the stakes are high.
+        </p>
+      </div>
+      <div>
+        <ul class="facts">
+          <li><span class="k">Founder</span> Hex Colony — workflow/AI automation, IoT, web</li>
+          <li><span class="k">Education</span> B.S. Computer Engineering, MSU-IIT (2024)</li>
+          <li><span class="k">Clients</span> 3 organisations served</li>
+          <li><span class="k">Training</span> 30 participants taught (IoT / Arduino)</li>
+          <li><span class="k">Recognition</span> Young Farmer Challenge — national finalist</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section section--tight" id="skills" style="background:#fff;border-block:1px solid var(--border);">
+    <div class="container">
+      <p class="eyebrow">Skills</p>
+      <h2 class="section-title">What I bring</h2>
+      <p class="section-intro">Grouped the way this role asks for it — from the prompt to the integration.</p>
+      <div class="grid-4">
+        <div class="card skill">
+          <h3><span class="dot"></span>Prompt Engineering</h3>
+          <ul>
+            <li>System-prompt design</li>
+            <li>Structured / JSON outputs</li>
+            <li>XML-tagged prompts</li>
+            <li>Few-shot &amp; prompt chaining</li>
+            <li>Evals &amp; output analysis</li>
+          </ul>
+        </div>
+        <div class="card skill">
+          <h3><span class="dot"></span>Automation</h3>
+          <ul>
+            <li>n8n (self-hosted, Docker)</li>
+            <li>Human-in-the-loop gates</li>
+            <li>Zapier / Make literacy</li>
+            <li>Scheduled workflows</li>
+            <li>Discord / Sheets / Gmail</li>
+          </ul>
+        </div>
+        <div class="card skill">
+          <h3><span class="dot"></span>Integration</h3>
+          <ul>
+            <li>Claude Messages API</li>
+            <li>REST API integration</li>
+            <li>CRM data modelling</li>
+            <li>HubSpot / Salesforce-style</li>
+            <li>Thin, swappable seams</li>
+          </ul>
+        </div>
+        <div class="card skill">
+          <h3><span class="dot"></span>Coding</h3>
+          <ul>
+            <li>Python</li>
+            <li>JavaScript</li>
+            <li>Git &amp; APIs</li>
+            <li>C/C++ &amp; embedded</li>
+            <li>ESP32 / FreeRTOS</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK / CASE STUDIES -->
+  <section class="section" id="work">
+    <div class="container">
+      <p class="eyebrow">Selected work</p>
+      <h2 class="section-title">Four Claude workflows for an automotive business</h2>
+      <p class="section-intro">
+        Real, runnable prototypes spanning the whole role — customer service, sales, internal
+        operations, and prompt optimisation. Each has engineered prompts, schema-enforced
+        output, a human-in-the-loop gate, and evals that measure (not guess) quality.
+      </p>
+      <div class="grid-2">
+        <article class="card cs-card">
+          <span class="tag">Customer service</span>
+          <h3>Service Inquiry Triage &amp; Reply Assistant</h3>
+          <p>
+            Classifies inbound service messages (booking / quote / parts / complaint), scores
+            urgency, drafts an on-brand reply, and logs to a CRM — flagging complaints and
+            safety issues for a human.
+          </p>
+          <span class="metricpill">▲ Escalation accuracy 91% → 100% via eval-driven tuning</span>
+          <a class="more" href="/case-studies/service-triage/">Read the case study →</a>
+        </article>
+        <article class="card cs-card">
+          <span class="tag">Sales</span>
+          <h3>Lead Qualification &amp; Follow-up Engine</h3>
+          <p>
+            Qualifies inbound leads on a BANT rubric, assigns hot/warm/cold tiers, drafts
+            personalised follow-ups, and prints a prioritised call queue to the CRM.
+          </p>
+          <span class="metricpill">▲ Escalation accuracy 75% → 100%, tiering held at 100%</span>
+          <a class="more" href="/case-studies/lead-qualification/">Read the case study →</a>
+        </article>
+        <article class="card cs-card">
+          <span class="tag">Internal ops · Training</span>
+          <h3>Internal Service Advisor Copilot</h3>
+          <p>
+            A knowledge-grounded assistant for service-desk staff: answers from the
+            dealership's own materials, cites the source document, escalates when it's not
+            covered — and has an onboarding mode that trains new hires.
+          </p>
+          <span class="metricpill">▲ Grounded &amp; cited · refuses to invent policy</span>
+          <a class="more" href="/case-studies/advisor-copilot/">Read the case study →</a>
+        </article>
+        <article class="card cs-card">
+          <span class="tag">Prompt engineering</span>
+          <h3>Prompt Evaluation &amp; Improvement Harness</h3>
+          <p>
+            Runs competing prompt versions through labelled test cases, scores them with
+            deterministic checks plus an LLM judge, and produces a before/after comparison —
+            proving a prompt change actually improved performance.
+          </p>
+          <span class="metricpill">▲ Measured a prompt change: 88% → 92% accuracy</span>
+          <a class="more" href="/case-studies/prompt-eval/">Read the case study →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESUME -->
+  <section class="section section--tight" id="resume" style="background:#fff;border-block:1px solid var(--border);">
+    <div class="container" style="text-align:center;">
+      <p class="eyebrow">Résumé</p>
+      <h2 class="section-title">One page, tailored to this work</h2>
+      <p class="section-intro" style="margin-inline:auto;">
+        AI/automation and prompt-engineering first, with the metrics behind each project.
+      </p>
+      <div class="hero__cta" style="justify-content:center;">
+        <a class="btn btn--primary" href="/resume/Kitz-Rulona-Resume.html" target="_blank" rel="noopener">View résumé</a>
+        <a class="btn btn--ghost" href="/resume/Kitz-Rulona-Resume.pdf" target="_blank" rel="noopener">Download PDF</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section contact" id="contact">
+    <div class="container">
+      <p class="eyebrow">Contact</p>
+      <h2 class="section-title">Let's build your AI workflows</h2>
+      <p class="section-intro" style="margin-inline:auto;">
+        Available ~20 hrs/week, remote, PHT — flexible across timezones.
+      </p>
+      <div class="contact__links">
+        <a href="mailto:kitzrulona321@gmail.com">✉ kitzrulona321@gmail.com</a>
+        <a href="tel:+639761291952">☎ +63 976 129 1952</a>
+        <a href="https://www.linkedin.com/in/shon-rulona-5b8731373/" target="_blank" rel="noopener">in LinkedIn</a>
+        <a href="https://github.com/kitzrulona321-a11y" target="_blank" rel="noopener">⌥ GitHub</a>
+        <a href="https://www.hexcolony.com/" target="_blank" rel="noopener">◆ Hex Colony</a>
+      </div>
+    </div>
+  </section>
+</Base>

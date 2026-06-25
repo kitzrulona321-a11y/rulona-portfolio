@@ -1,0 +1,47 @@
+---
+const { title = "Kitz Rulona — AI Workflow Engineer", description = "Claude AI & Automation Specialist. I design and ship Claude-powered automations for real business operations — prompt engineering, workflow automation, and system integration." } = Astro.props;
+import "../styles/global.css";
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a href="#main" class="sr-only">Skip to content</a>
+    <header class="nav">
+      <div class="container nav__inner">
+        <a class="nav__brand" href="/">Kitz <span>Rulona</span></a>
+        <nav class="nav__links" aria-label="Primary">
+          <a href="/#about">About</a>
+          <a href="/#skills">Skills</a>
+          <a href="/#work">Work</a>
+          <a href="/#resume">Résumé</a>
+          <a href="/#contact" class="nav__cta">Contact</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="footer">
+      <div class="container">
+        © {new Date().getFullYear()} Kitz Shondel Boy Rulona · Built with Astro · Butuan City, Philippines
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+---
+import Base from "../../layouts/Base.astro";
+import { videos } from "../../videos.js";
+const video = videos["service-triage"];
+---
+<Base title="Service Inquiry Triage & Reply Assistant — Kitz Rulona" description="A Claude workflow that triages inbound automotive-service messages, drafts on-brand replies, logs to a CRM, and escalates complaints and safety issues to a human.">
+  <article class="section">
+    <div class="container cs">
+      <a class="cs__back" href="/#work">← Back to work</a>
+      <h1>Service Inquiry Triage &amp; Reply Assistant</h1>
+      <p class="cs__sub">Python · Claude Messages API · CRM stub</p>
+      {video && (<p><a class="btn btn--ghost" href={video} target="_blank" rel="noopener">▶ Watch the 90-second demo</a></p>)}
+
+      <h2>The problem</h2>
+      <p>
+        A dealership service department gets a constant stream of inbound messages — email, web
+        forms, SMS, Facebook — and most are repetitive: "how much is a service", "can I book
+        Saturday", "do you have this part". A service advisor spends real time reading each one,
+        working out what it is, and typing a reply. Meanwhile a genuinely urgent message
+        (grinding brakes, overheating) sits in the same queue as a question about opening hours.
+        The cost is slow first response and no triage of safety-critical messages.
+      </p>
+
+      <h2>The approach</h2>
+      <p>One Claude call does four jobs per message:</p>
+      <ul>
+        <li><strong>Classifies</strong> intent — booking / quote / parts / complaint / other</li>
+        <li><strong>Scores urgency</strong> — high for safety issues or upset customers</li>
+        <li><strong>Extracts</strong> the customer name and vehicle when present</li>
+        <li><strong>Drafts</strong> a warm, on-brand reply for an advisor to approve and send</li>
+      </ul>
+      <p>
+        It then logs structured data to a CRM and flags complaints and safety issues for a
+        human — automate the volume, keep a person on the high-stakes edge.
+      </p>
+
+      <h2>Architecture</h2>
+      <div class="diagram">inbound message
+   ↓
+orchestrator  (system prompt + XML-tagged message + few-shot examples)
+   ↓
+Claude  →  schema-enforced JSON
+   ↓        &#123; intent, urgency, customer, vehicle, summary, draft_reply, needs_human &#125;
+   ├──→  CRM stub (columns map 1:1 to HubSpot / VinSolutions)
+   └──→  human-review flag  →  advisor approves / edits / sends</div>
+      <p>
+        The CRM is a thin, swappable seam: one function writes the row, so moving from the CSV
+        stub to a real CRM API is a one-function change — the Claude logic never changes.
+      </p>
+
+      <h2>The engineered prompt</h2>
+      <p>The system prompt fixes the role, the dealership voice, and an explicit escalation rule. Inputs are wrapped in XML tags so a customer can't hijack the instructions, and output is constrained to a JSON schema:</p>
+      <pre><span class="c"># system prompt (excerpt)</span>
+You are the service front-desk assistant for Northgate Auto...
+Classify intent, score urgency, extract details, draft a reply.
+
+<span class="c"># escalation rule — the key to reliability</span>
+Set "needs_human" to true ONLY if:
+  - the intent is "complaint";
+  - the message describes a safety concern; or
+  - it is a billing/refund dispute.
+Otherwise false. Routine bookings, quotes, and parts
+enquiries do NOT need a human.</pre>
+
+      <h2>Sample runs</h2>
+      <div class="run">
+        <div class="in">"while driving home my temperature gauge went all the way to red and there was steam from the hood. is it safe to drive to you tomorrow??"</div>
+        <div class="out">
+          intent: <span class="g">booking</span> · urgency: <span class="g">high</span><span class="badge">NEEDS HUMAN</span><br />
+          <em>Draft:</em> "...An engine that hot with steam is a safety concern — please don't drive it. The safest option is to have it towed in. Call us on (02) 555-0192 and we'll prioritise it..."
+        </div>
+      </div>
+      <div class="run">
+        <div class="in">"Good morning, I'd like to book my Ford Ranger for its 90,000 km service this Saturday. Also roughly how much will that cost?"</div>
+        <div class="out">
+          intent: <span class="g">booking</span> · urgency: <span class="g">medium</span><span class="badge badge--ok">AUTO-DRAFT</span><br />
+          <em>Draft:</em> "...We'd be glad to book your Ranger in. We have Saturday morning slots — the 90k service price varies by model, so we'll confirm an exact figure before your visit..."
+        </div>
+      </div>
+
+      <h2>Measuring &amp; improving it (evals)</h2>
+      <p>
+        "Analyse outputs and continuously improve them" is in the job description, so the demo
+        ships with a labelled eval harness. It caught a real bug: the original prompt told the
+        model to "flag anything you're unsure about", which over-escalated routine quotes. I
+        replaced it with an explicit decision rule and measured the fix:
+      </p>
+      <pre>Version                              needs_human   exact-match
+Before (vague "when in doubt, flag")    91% (10/11)   10/11
+After (explicit rule)                  100% (11/11)   11/11</pre>
+      <p>Intent and urgency accuracy stayed at 100% — the change was surgical, and escalation is now consistent run-to-run.</p>
+
+      <h2>Cost &amp; model choice</h2>
+      <p>
+        Defaults to Claude Haiku 4.5 ($1 / $5 per 1M tokens) because triage is high-volume,
+        low-complexity classification — cents per hundreds of messages. One env var switches to
+        Opus 4.8 for the rare hard case. Cheap model for the common case, strong model for the
+        hard one.
+      </p>
+
+      <p style="margin-top:34px;"><a class="btn btn--ghost" href="/#work">← Back to work</a></p>
+    </div>
+  </article>
+</Base>

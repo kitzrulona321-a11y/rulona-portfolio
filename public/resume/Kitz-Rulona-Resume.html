@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kitz Rulona — AI Workflow Engineer</title>
+<style>
+  :root {
+    --ink: #2b2b2b;
+    --muted: #5c5c5c;
+    --accent: #b8860b;      /* darker gold — prints cleanly */
+    --rule: #d9d2c2;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto,
+                 "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink);
+    font-size: 10.6px;
+    line-height: 1.42;
+    background: #f3f3f3;
+  }
+  .page {
+    width: 8.27in;            /* A4 width */
+    min-height: 11.69in;
+    margin: 16px auto;
+    padding: 0.5in 0.6in;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,.12);
+  }
+  header { border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-bottom: 12px; }
+  h1 { font-size: 23px; margin: 0; letter-spacing: .3px; }
+  .title { color: var(--accent); font-weight: 600; font-size: 11.5px;
+           text-transform: uppercase; letter-spacing: 1.1px; margin: 3px 0 7px; }
+  .contact { color: var(--muted); font-size: 9.7px; }
+  .contact a { color: var(--muted); text-decoration: none; }
+  .contact span { white-space: nowrap; }
+  h2 { font-size: 10.5px; text-transform: uppercase; letter-spacing: 1.3px;
+       color: var(--accent); margin: 14px 0 5px; padding-bottom: 2px;
+       border-bottom: 1px solid var(--rule); }
+  p { margin: 4px 0; }
+  ul { margin: 4px 0; padding-left: 16px; }
+  li { margin: 2.5px 0; }
+  .summary { color: #333; }
+  .proj { margin: 7px 0; }
+  .proj .ph { font-weight: 700; }
+  .proj .meta { color: var(--accent); font-style: italic; font-weight: 500; }
+  .role { display: flex; justify-content: space-between; align-items: baseline;
+          font-weight: 700; margin-top: 7px; }
+  .role .when { color: var(--muted); font-weight: 500; font-style: italic;
+                font-size: 9.6px; white-space: nowrap; }
+  .skills b { color: var(--ink); }
+  strong.k { color: var(--accent); }
+  @media print {
+    body { background: #fff; font-size: 10.4px; }
+    .page { box-shadow: none; margin: 0; width: auto; min-height: auto;
+            padding: 0.4in 0.5in; }
+    @page { size: A4; margin: 0; }
+    a { color: var(--muted); }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>Kitz Shondel Boy Rulona</h1>
+    <div class="title">AI Workflow Engineer · Claude Prompt Engineering &amp; Business Automation</div>
+    <div class="contact">
+      <span>Butuan City, Philippines (Remote)</span> &nbsp;·&nbsp;
+      <span>kitzrulona321@gmail.com</span> &nbsp;·&nbsp;
+      <span>+63 976 129 1952</span><br>
+      <a href="https://www.hexcolony.com/">hexcolony.com</a> &nbsp;·&nbsp;
+      <a href="https://www.linkedin.com/in/shon-rulona-5b8731373/">linkedin.com/in/shon-rulona</a> &nbsp;·&nbsp;
+      <a href="https://github.com/kitzrulona321-a11y">github.com/kitzrulona321-a11y</a>
+    </div>
+  </header>
+
+  <section>
+    <h2>Summary</h2>
+    <p class="summary">AI workflow engineer who designs and ships <strong class="k">Claude-powered
+    automations</strong> for real business operations. Daily Claude Code user with hands-on
+    prompt engineering (system prompts, structured outputs, few-shot, evals) and production
+    workflow automation with <strong class="k">n8n</strong> and APIs. Founder of a tech startup
+    that automates customer-facing and back-office work. Computer Engineering background across
+    software, APIs, and IoT/firmware. Strong written English and experienced at training others.</p>
+  </section>
+
+  <section class="skills">
+    <h2>Core Skills</h2>
+    <ul>
+      <li><b>Claude &amp; Prompt Engineering:</b> system-prompt design, structured/JSON outputs,
+        XML-tagged prompts, few-shot, prompt chaining, evals &amp; output analysis, Claude Messages
+        API, Claude Code (daily)</li>
+      <li><b>Automation &amp; Integration:</b> n8n (self-hosted, Docker), API integration,
+        human-in-the-loop approval workflows, Discord / Google Sheets / Gmail, CRM data modelling
+        (HubSpot / Salesforce / VinSolutions-style records)</li>
+      <li><b>Coding:</b> Python, JavaScript, REST APIs, Git; C/C++ &amp; embedded (ESP32, FreeRTOS)</li>
+      <li><b>Domain:</b> customer-service &amp; sales workflow automation, IoT, robotics simulation</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Selected Projects</h2>
+
+    <div class="proj">
+      <span class="ph">Claude Service Inquiry Triage &amp; Reply Assistant</span> —
+      <span class="meta">Python, Claude Messages API</span>
+      <p>Claude workflow that classifies inbound automotive-service messages (booking / quote /
+      parts / complaint), scores urgency, drafts an on-brand reply, and logs structured data to a
+      CRM, with a human-approval gate for complaints and safety issues. Built a labelled eval
+      harness and used it to tune the escalation prompt, raising human-escalation accuracy from
+      <strong class="k">91% to 100%</strong>.</p>
+    </div>
+
+    <div class="proj">
+      <span class="ph">Claude Lead Qualification &amp; Follow-up Engine</span> —
+      <span class="meta">Python, Claude Messages API</span>
+      <p>Claude workflow that qualifies inbound sales leads on a BANT rubric, assigns hot/warm/cold
+      tiers, drafts personalised follow-ups, and outputs a prioritised call queue to a CRM.
+      Eval-driven prompt tuning improved escalation accuracy from <strong class="k">75% to 100%</strong>
+      while holding tiering accuracy at 100%.</p>
+    </div>
+
+    <div class="proj">
+      <span class="ph">Hex Colony Invoice Automation (production)</span> —
+      <span class="meta">n8n, Discord, Google Sheets, Gmail</span>
+      <p>Human-in-the-loop invoice pipeline: parse &amp; validate a request, post a preview for
+      Discord approval, auto-number with duplicate detection, generate a branded invoice email,
+      send it, and log to Google Sheets with scheduled reminders.
+      <strong class="k">Cut invoice creation from ~15 minutes to ~1 minute</strong> each.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Experience</h2>
+    <div class="role"><span>Founder &amp; CEO — Hex Colony</span>
+      <span class="when">Butuan City, Philippines · Sept 2025 – Present</span></div>
+    <ul>
+      <li>Founded a technology startup delivering workflow/AI automation, IoT, and web development;
+        <strong class="k">served 3 client organisations</strong> to date.</li>
+      <li>Lead the design and delivery of automation systems, including the production n8n invoice
+        workflow above and Claude-based prototypes for customer service and sales.</li>
+      <li>Run <b>Urbiony</b>, an agri-tech venture (IoT hydroponics monitoring) under Hex Colony;
+        partnered with the Department of Agriculture and reached <strong class="k">national finalist</strong>
+        in the Young Farmer Challenge.</li>
+    </ul>
+    <div class="role"><span>IoT / Firmware Developer</span>
+      <span class="when">Project-based</span></div>
+    <ul>
+      <li>Built embedded systems on ESP32 (sensors, BLE, FreeRTOS, PCB design) and robotics
+        simulations (MuJoCo; Unitree B2 quadruped and H1 humanoid).</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Training &amp; Leadership</h2>
+    <ul>
+      <li>Delivered hands-on technical training (IoT / Arduino) to <strong class="k">30 participants</strong>
+        in the Caraga region — comfortable teaching teammates AI and automation best practices.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    <p><b>B.S. in Computer Engineering</b> — Mindanao State University–Iligan Institute of
+    Technology (MSU-IIT) · 2024</p>
+  </section>
+
+</div>
+</body>
+</html>
