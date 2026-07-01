@@ -93,11 +93,11 @@
     <ul>
       <li><b>Claude &amp; Prompt Engineering:</b> system-prompt design, structured/JSON outputs,
         XML-tagged prompts, few-shot, prompt chaining, evals &amp; output analysis, Claude Messages
-        API, Claude Code (daily)</li>
+        API, custom MCP servers, Claude Agent SDK, scheduled agents, Claude Code (daily)</li>
       <li><b>Automation &amp; Integration:</b> n8n (self-hosted, Docker), API integration,
         human-in-the-loop approval workflows, Discord / Google Sheets / Gmail, CRM data modelling
         (HubSpot / Salesforce / VinSolutions-style records)</li>
-      <li><b>Coding:</b> Python, JavaScript, REST APIs, Git; C/C++ &amp; embedded (ESP32, FreeRTOS)</li>
+      <li><b>Coding:</b> Python, TypeScript/JavaScript, REST APIs, Git; C/C++ &amp; embedded (ESP32, FreeRTOS)</li>
       <li><b>Domain:</b> customer-service &amp; sales workflow automation, IoT, robotics simulation</li>
     </ul>
   </section>
@@ -112,6 +112,16 @@
 
   <section>
     <h2>Selected Projects</h2>
+
+    <div class="proj">
+      <span class="ph">Autonomous Overnight Ops Agent</span> —
+      <span class="meta">TypeScript, custom MCP server, Claude Agent SDK</span>
+      <p>Built a custom MCP server exposing a service desk's CRM and knowledge base as tools, and a
+      Claude Agent SDK loop that triages the overnight message queue <strong class="k">on a
+      schedule</strong> — matching customers, grounding prices, drafting replies, and flagging
+      complaints and safety issues for a human. MCP layer verified end-to-end with an automated
+      test suite.</p>
+    </div>
 
     <div class="proj">
       <span class="ph">Claude Service Inquiry Triage &amp; Reply Assistant</span> —

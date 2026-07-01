@@ -1,0 +1,90 @@
+---
+import Base from "../../layouts/Base.astro";
+import { videos } from "../../videos.js";
+const video = videos["ops-agent"];
+---
+<Base title="Autonomous Overnight Ops Agent — Kitz Rulona" description="A custom MCP server plus a Claude Agent SDK loop that triages a service desk's overnight message queue on a schedule — matching customers, grounding prices, drafting replies, and flagging the urgent ones for a human.">
+  <article class="section">
+    <div class="container cs">
+      <a class="cs__back" href="/#work">← Back to work</a>
+      <h1>Autonomous Overnight Ops Agent</h1>
+      <p class="cs__sub">TypeScript · custom MCP server · Claude Agent SDK · scheduled task</p>
+      {video && (<p><a class="btn btn--ghost" href={video} target="_blank" rel="noopener">▶ Watch the 90-second demo</a></p>)}
+
+      <h2>The problem</h2>
+      <p>
+        A service desk's worst hour is the first one: staff arrive to an inbox of overnight
+        messages, routine quote requests mixed with the occasional emergency. This agent does the
+        triage overnight, so that hour starts <strong>already sorted</strong> — and the genuinely
+        urgent items are flagged before anyone reads them.
+      </p>
+      <p>
+        It's also the demo that closes a gap. My other four show prompt engineering, evals, and
+        Claude API/Code workflows. This one is built on the newer agentic primitives a Claude
+        specialist gets asked for: a <strong>custom MCP server</strong>, the <strong>Agent
+        SDK</strong>, an <strong>autonomous tool-using loop</strong>, and a
+        <strong>scheduled</strong> trigger — in TypeScript.
+      </p>
+
+      <h2>Architecture</h2>
+      <div class="diagram">          schedule (07:00)
+                ↓
+   Claude Agent SDK loop          src/agent/run.ts
+   (Claude reasons + plans)
+                ↓  MCP (stdio)
+   northgate-ops MCP server       src/mcp-server/server.ts
+   5 tools over the CRM + KB
+                ↓
+ customers · service history · overnight queue · pricing · escalation</div>
+
+      <h2>The custom MCP server</h2>
+      <p>
+        A standalone Model Context Protocol server (<code>@modelcontextprotocol/sdk</code>) exposes
+        the service desk as five typed tools: <code>lookup_customer</code>,
+        <code>get_service_history</code>, <code>list_overnight_queue</code>,
+        <code>search_knowledge_base</code>, and <code>log_to_crm</code>. Inputs are validated with
+        Zod. The data layer is a thin seam — local JSON today, a real CRM/DMS in production — so the
+        tool surface never changes. Because it speaks plain MCP, the <em>same</em> server drops
+        straight into <strong>Claude Code or Cowork</strong>.
+      </p>
+
+      <h2>The agent loop, per message</h2>
+      <ul>
+        <li>Match the sender to a customer; pull service history when it's relevant (context for comebacks).</li>
+        <li>Ground any price or escalation question against the knowledge base — never invent a number.</li>
+        <li>Decide a category, an urgency, and whether a human must take over before any reply goes out.</li>
+        <li>Write a ready-to-send draft and log the decision to the CRM.</li>
+      </ul>
+
+      <h2>What it produced (verified run)</h2>
+      <pre>MSG-9001  [quote-request/medium]            Daniel Reyes
+MSG-9002  [quote-request/medium]            Marisol Tan
+MSG-9003  [complaint/high]      ⚠ HUMAN     Grace Villanueva
+MSG-9004  [quote-request/medium]            Erwin Castillo
+MSG-9005  [safety/high]         ⚠ HUMAN     Unknown caller
+
+Triaged 5 messages — 2 flagged for a human.
+Most urgent: MSG-9003 — comeback after a paid repair — senior advisor must call.</pre>
+      <p>
+        The complaint (a repair that didn't hold) and the overheating engine are pulled out for a
+        human; the safety reply tells the customer <em>not to drive</em> and that the team will
+        arrange a tow. Routine quotes get drafts and are logged. Nothing irreversible happens
+        autonomously — the agent stages decisions for a person to release.
+      </p>
+
+      <h2>Honest about what's verified</h2>
+      <p>
+        The demo is explicit about what runs where. The MCP server and the full triage pipeline are
+        tested end-to-end <strong>offline</strong> — <code>npm test</code> exercises all five tools
+        with no model (10 assertions), and <code>npm run dry-run</code> drives the real MCP
+        client/server through the whole pipeline. The Agent SDK adds the reasoning layer on top and
+        runs live on a Claude subscription; the runner even falls back to the deterministic dry-run
+        if the SDK or auth is unavailable, so the demo never hard-fails. Building the testable core
+        so it doesn't depend on a paid call — that's the difference between "I wired an agent" and
+        "I can ship one".
+      </p>
+
+      <p style="margin-top:34px;"><a class="btn btn--ghost" href="/#work">← Back to work</a></p>
+    </div>
+  </article>
+</Base>

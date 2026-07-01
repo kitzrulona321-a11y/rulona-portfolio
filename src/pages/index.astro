@@ -130,11 +130,12 @@ import Base from "../layouts/Base.astro";
   <section class="section" id="work">
     <div class="container">
       <p class="eyebrow">Selected work</p>
-      <h2 class="section-title">Four Claude workflows for an automotive business</h2>
+      <h2 class="section-title">Five Claude workflows for an automotive business</h2>
       <p class="section-intro">
         Real, runnable prototypes spanning the whole role — customer service, sales, internal
-        operations, and prompt optimisation. Each has engineered prompts, schema-enforced
-        output, a human-in-the-loop gate, and evals that measure (not guess) quality.
+        operations, prompt optimisation, and an autonomous agent on a custom MCP server. Each
+        has engineered prompts, schema-enforced output, a human-in-the-loop gate, and evals or
+        tests that measure (not guess) quality.
       </p>
       <div class="grid-2">
         <article class="card cs-card">
@@ -179,6 +180,18 @@ import Base from "../layouts/Base.astro";
           </p>
           <span class="metricpill">▲ Measured a prompt change: 88% → 92% accuracy</span>
           <a class="more" href="/case-studies/prompt-eval/">Read the case study →</a>
+        </article>
+        <article class="card cs-card">
+          <span class="tag">Agent · MCP · Scheduled</span>
+          <h3>Autonomous Overnight Ops Agent</h3>
+          <p>
+            A custom MCP server exposes the service desk's CRM and knowledge base as tools; a
+            Claude Agent SDK loop triages the overnight message queue on a schedule — matching
+            customers, grounding prices, drafting replies, and flagging complaints and safety
+            issues for a human. TypeScript.
+          </p>
+          <span class="metricpill">▲ Custom MCP server · Agent SDK · scheduled · MCP tools verified end-to-end</span>
+          <a class="more" href="/case-studies/ops-agent/">Read the case study →</a>
         </article>
       </div>
     </div>

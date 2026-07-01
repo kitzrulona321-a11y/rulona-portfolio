@@ -13,4 +13,5 @@ export const videos = {
   "lead-qualification": "",
   "advisor-copilot": "",
   "prompt-eval": "",
+  "ops-agent": "",
 };
