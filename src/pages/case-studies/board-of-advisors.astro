@@ -1,0 +1,96 @@
+---
+import Base from "../../layouts/Base.astro";
+---
+<Base title="Personal Board of Advisors — Kitz Rulona" description="A personal AI coaching system built on Claude Code: a structured interview becomes persistent memory, public content from three chosen experts becomes a knowledge base, and a custom skill convenes them — in their own voices — on every decision. Includes a drift watchdog that emails the board's letter when I go dark.">
+  <article class="section">
+    <div class="container cs">
+      <a class="cs__back" href="/#work">← Back to work</a>
+      <h1>Personal Board of Advisors</h1>
+      <p class="cs__sub">Claude Code · context engineering · custom skill · MCP (Calendar) · PowerShell watchdog</p>
+      <p><a class="btn btn--ghost" href="https://github.com/kitzrulona321-a11y/board-of-advisors" target="_blank" rel="noopener">View the open-source template on GitHub</a></p>
+
+      <h2>The problem</h2>
+      <p>
+        Generic AI advice is worthless — "it depends on your situation" — because the model doesn't
+        <em>know</em> your situation. I wanted advice from the specific experts I'd choose for my
+        specific life: a business-scaling coach, a boring-business investor, and a Filipino money
+        coach. I can't call Alex Hormozi, Codie Sanchez, or Chinkee Tan. But I can engineer their
+        thinking into context Claude can use — grounded in a brutally honest profile of me.
+      </p>
+      <p>
+        <strong>I was my own first client.</strong> This isn't a demo with fake data; I use it
+        daily, and it has already made real decisions (including vetoing one of my own purchases).
+      </p>
+
+      <h2>Architecture</h2>
+      <div class="diagram">  10-question interview  (one at a time — follow-ups surface the truth)
+            ↓
+  PROFILE.md              goals, blockers, money habits, coaching style,
+                          early-warning signs — read before ANY advice
+            ↓
+  knowledge/raw/&lt;slug&gt;/   source notes per advisor (articles, talks, book notes)
+  knowledge/wiki/&lt;slug&gt;.md synthesis: core ideas · vocabulary · stances ·
+                          recurring stories · voice guide · "maps to me"
+            ↓
+  /ask-the-board          custom Claude Code skill
+  each advisor in voice → consensus &amp; clashes → decisive synthesis
+            ↓
+  outputs                 dated actions → Google Calendar via MCP
+                          drift → watchdog emails the board's letter</div>
+
+      <h2>Context engineering, not prompting</h2>
+      <p>
+        The interesting work is in the pipeline, not a single prompt. Raw content notes stay
+        separated from synthesized wikis, so personas stay grounded in what an advisor
+        <em>actually says</em> — their frameworks, vocabulary, and recurring stories — instead of
+        the model's vague impression of them. Each wiki ends with a
+        <strong>"how this maps to me"</strong> section connecting the advisor's ideas to my real
+        constraints, which is what keeps the output from collapsing into generic guru advice.
+        Disagreement is a feature: the skill explicitly surfaces where advisors clash and why
+        (different risk profiles), then forces a decisive synthesis instead of a hedge.
+      </p>
+
+      <h2>The skill in action (sanitized excerpt)</h2>
+      <pre>/ask-the-board spend this month's budget on design tools, or the shop's opening promo?
+
+✅ Where they agree: don't buy the tools — free tiers cover both needs.
+⚔️ Where they clash: two advisors say deploy the full budget into the
+   opening; the money coach says spend the minimum and start saving.
+🎯 Synthesis: hold the tools. ~2/3 to opening-day visibility (quotes
+   first), ~1/3 starts the savings habit. Three dated actions →
+   pushed to Google Calendar via MCP, reasoning embedded in each event.</pre>
+
+      <h2>The drift watchdog</h2>
+      <p>
+        In the interview I named my own early-warning sign: going quiet for 2+ days. So the system
+        watches for it. A scheduled PowerShell task checks the file-modified times of my local
+        Claude Code session transcripts — no API, no polling, zero cost. Past 48 hours of silence,
+        it emails me a get-back-on-track letter written in the advisors' voices via Gmail SMTP
+        (DPAPI-encrypted app password, 48-hour cooldown so a long drift doesn't spam). Reminders
+        handle my tasks; this handles my <em>disappearing</em> — and it only speaks when I've
+        actually gone dark.
+      </p>
+
+      <h2>Privacy by design</h2>
+      <p>
+        The system only works if the inputs are brutally honest — which is exactly why the real
+        data can never ship. The public repo is a <strong>template</strong>: the interview
+        protocol, profile and wiki schemas, the generalized skill, the watchdog, and fictional
+        example data. My actual profile, knowledge base, and letter are gitignored by default, so
+        anyone who clones it can't accidentally commit their own life either.
+      </p>
+
+      <h2>Honest about what's verified</h2>
+      <p>
+        The watchdog's detection logic was tested against real session files before shipping, and
+        the full email path was test-fired end-to-end (<code>-Force</code> flag) before trusting
+        the schedule. What's <em>not</em> automated is honest too: the Gmail connector for Claude
+        is draft-only, so conditional email needed its own SMTP rail — the case study writes that
+        limitation down instead of pretending the connector sends. And the advisor personas are
+        synthesized from public content for personal use; the raw notes stay private.
+      </p>
+
+      <p style="margin-top:34px;"><a class="btn btn--ghost" href="/#work">← Back to work</a></p>
+    </div>
+  </article>
+</Base>
